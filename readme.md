@@ -16,7 +16,6 @@ The data study used a scraped dataset from the public GoFundMe website. Data of 
 |   └── output
 └── src
     ├── analysis
-    ├── data-collection
     └── data-preparation
 ```
 
