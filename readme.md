@@ -1,10 +1,12 @@
 # How message framing influences fundraising success
 
-This repository contains all additional information related to the processes of data collection, parsing, preparation and analysis for my master's thesis Framing Charity: How Message Framing Influences Donation Decisions on GoFundMe.
+This repository contains all additional information related to the processes of data collection, parsing, preparation and analysis for my master's thesis [Framing Charity: How Message Framing Influences Donation Decisions on GoFundMe].
 
 ## Data description
+The data study used a scraped dataset from the public GoFundMe website. Data of 5040 campaigns were processed across GoFundMe's 18 categories. 
 
 ## This Repository's structure
+```
 ├── README.md
 ├── Durkstra (2026).pdf
 ├── .gitignore
@@ -16,6 +18,7 @@ This repository contains all additional information related to the processes of 
     ├── analysis
     ├── data-collection
     └── data-preparation
+```
 
 ## Dependencies
 - Python and the following packages:
