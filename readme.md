@@ -33,5 +33,21 @@ pip install nltk
 - R and the following packages:
 
 ```
-install.packages(c("stargazer", "haven", "data.table", "ggplot2", "readxl", "dplyr", "readr", "janitor"))
+install.packages(c(library(haven)
+library(ggplot2)
+library(readxl)
+library(dplyr)
+library(data.table)
+library(readr)
+library(stargazer)
+library(naniar)
+library(tidyverse)
+library(corrplot)
+library(GGally)
+library(ggcorrplot)
+library(car)
+library(lme4)
+library(lmtest)
+library(sandwich)
+library(caret)))
 ```
