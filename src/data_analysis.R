@@ -37,7 +37,6 @@ model1 <- lm(log_donor_count ~
                log_goal_amount,
              campaigndataclean)
 summary(model1)
-
 AIC(model1)
 BIC(model1)
 # R^2 0.502, p < 0.001
@@ -95,7 +94,7 @@ summary(catonlymodel)
 # significant differences between categories, most are quite small though
 
 # estimate model with categories: OLS (no intercept) ----
-model2 <- lm(log_donor_count ~ 0 +
+model1withcat <- lm(log_donor_count ~ 0 +
                catisemergency +
                catisevent +
                catiseducation +
@@ -119,10 +118,13 @@ model2 <- lm(log_donor_count ~ 0 +
                 inclusivity_score +
                 log_goal_amount,
                    campaigndataclean)
-summary(model2)
+summary(model1withcat)
+
+write.csv(as.data.frame(summary(model1withcat)$coefficients), file = "model1withcat.csv", fileEncoding = "UTF-8")
+
 # interpret coefficients from this model
 
-model2alt <- lm(log_donor_count ~ 
+model1withcatalt <- lm(log_donor_count ~ 
                catisemergency +
                catisevent +
                catiseducation +
@@ -146,48 +148,49 @@ model2alt <- lm(log_donor_count ~
                inclusivity_score +
                log_goal_amount,
              campaigndataclean)
-summary(model2alt)
+summary(model1withcatalt)
 # model fit: R^2 0.5804 on p < 0.001
 
 # fit
-AIC(model2alt) #13493.4
-BIC(model2alt) #13643.42
+AIC(model1withcatalt) #13493.4
+BIC(model1withcatalt) #13643.42
 
 # extended model ----
 
 ## interaction ----
 # full interaction (no intercept)
-modelfull <- lm(
+model2 <- lm(
   log_donor_count ~
     0 +
     (gain_loss_score + emotional_valence + inclusivity_score) * category +
     log_goal_amount,
   data = campaigndataclean)
-summary(modelfull)
+summary(model2)
 
-write.csv(as.data.frame(summary(modelfull)$coefficients), file = "modelfull.csv", fileEncoding = "UTF-8")
+write.csv(as.data.frame(summary(model2)$coefficients), file = "model2.csv", fileEncoding = "UTF-8")
 
 # again, coefficients can be interpreted, but cannot interpret model fit stats:
 # estimate intercept model for fit
-modelfullalt <- lm(
+model2alt <- lm(
   log_donor_count ~
     (gain_loss_score + emotional_valence + inclusivity_score) * category +
     log_goal_amount,
   data = campaigndataclean)
-summary(modelfullalt)
+summary(model2alt)
+
 # R^2 0.5893, p < 0.001
 
 # compare model performace
-anova(model1,modelfullalt)
+anova(model1,model2alt)
 # interaction makes significant but small improvement
 
-AIC(modelfullalt) #13488.3
-BIC(modelfullalt) #13970.97
+AIC(model2alt) #13488.3
+BIC(model2alt) #13970.97
 
 # information criteria also similar
 
-AIC(modelfullalt) - AIC(model1) #-832.12, slight improvement
-BIC(modelfullalt) - BIC(model1) #-388.59, slight improvement
+AIC(model2alt) - AIC(model1) #-832.12, slight improvement
+BIC(model2alt) - BIC(model1) #-388.59, slight improvement
 
 # robustness ----
 ## mixed effects base model ----
@@ -278,14 +281,14 @@ abline(h = 0, col = "firebrick1", lwd = 1)
 
 plot(model1, which = 3)
 #fanning pattern down the middle of fitted values: test formally
-bptest(modelfull)
-ncvTest(modelfull)
+bptest(model2)
+ncvTest(model2)
 #significant heteroscedasticity: try using robust errors
-coeftest(modelfullalt, vcov = vcovHC(modelfullalt, type = "HC1"))
+coeftest(model2alt, vcov = vcovHC(model2alt, type = "HC1"))
 
 ### normality of error ----
-qqnorm(residuals(modelfull))
-qqline(residuals(modelfull))
+qqnorm(residuals(model2))
+qqline(residuals(model2))
 # looks good, only tail and head of points start to deviate slightly
 
 ## multicollinearity of predictors ----
